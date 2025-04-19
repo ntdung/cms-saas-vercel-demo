@@ -1,14 +1,23 @@
-import { type ProjectFileTemplateContext } from './base.js'
+import { type ProjectFileTemplate } from "./base.js";
+import path from "node:path";
 
-type FlagsTemplateContext = ProjectFileTemplateContext & {
-  runAnnotation: string
+export const FlagsFile : ProjectFileTemplate = {
+    prefix({ files: { sdkFile }})
+    {
+        return `// Auto generated flags.ts from Optimizely Feature Experimentation
+        'use server'
+        import { unstable_flag as flag } from '@vercel/flags/next';
+        import { type OptimizelyDecision } from '@optimizely/optimizely-sdk/lite';
+        import { getUserContext } from './${ path.basename(sdkFile, '.ts') }';
+        
+        type OptimizelyFlag<T extends { [variableKey: string]: unknown }> = {
+          _enabled: boolean
+        } & T
+        
+        type TypedOptimizelyDecision<T extends { [variableKey: string]: unknown }> = Omit<OptimizelyDecision, 'variables'> & {
+          variables: T
+        }
+        
+        `
+    }
 }
-
-export const values = (ctx: ProjectFileTemplateContext) : FlagsTemplateContext => {
-  return {
-    runAnnotation: '\'use server\'',
-    ...ctx
-  }
-}
-
-export default values

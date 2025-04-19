@@ -13,10 +13,10 @@ import { type Metadata } from "next";
  * Blank Experience
  * An experience without a predefined layout.
  */
-export const BlankExperienceExperience : CmsComponent<BlankExperienceDataFragment> = ({ data, ctx }) => {
+export const BlankExperienceExperience : CmsComponent<BlankExperienceDataFragment> = ({ data }) => {
     const composition = getFragmentData(CompositionDataFragmentDoc, (data as ExperienceDataFragment).composition)
-    return <CmsEditable as="div" className="vb:experience" cmsFieldName="unstructuredData" ctx={ ctx }>
-        { composition && isNode(composition) && <OptimizelyComposition node={composition} ctx={ ctx } /> }
+    return <CmsEditable as="div" className="vb:experience">
+        { composition && isNode(composition) && <OptimizelyComposition node={composition} /> }
     </CmsEditable>
 }
 BlankExperienceExperience.displayName = "Blank Experience (Experience/BlankExperience)"

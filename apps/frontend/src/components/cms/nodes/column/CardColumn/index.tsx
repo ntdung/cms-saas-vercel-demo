@@ -14,6 +14,4 @@ export const CardColumn : CmsLayoutComponent<CardColumnProps> = ({ layoutProps, 
     return <Card cardColor={ colBackgroundColor } className={ outerCssClasses } innerClassName={ innerCssClasses } direction="col">{ children }</Card>
 }
 
-CardColumn.displayName = "CardColumn";
-
 export default CardColumn;

@@ -13,8 +13,6 @@ export type OptiCmsArgs<P extends Record<string,any> = {}> = {
     token: string
     nosrc: boolean
     envfile: string
-    tpl: boolean
-    force: boolean
 } & P
 
 export type OptiCmsArgsWithConfig<P extends Record<string,any> = {}> = { 

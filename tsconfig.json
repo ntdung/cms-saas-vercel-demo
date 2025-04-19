@@ -2,6 +2,7 @@
     "exclude": [
         "packages/**/tests/**",
         "packages/**/dist/**",
+        "apps/**",
         ".vscode/**",
         ".yarn/**"
     ]

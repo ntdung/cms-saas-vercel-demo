@@ -341,38 +341,6 @@ export const BlankSectionDataFragmentDoc = gql`
   }
 }
     `;
-export const ContinueReadingComponentDataFragmentDoc = gql`
-    fragment ContinueReadingComponentData on ContinueReadingComponent {
-  topline
-  shared
-  heading
-  content {
-    ...IContentData
-    ...BlockData
-    ...ArticleListElementData
-    ...ButtonBlockData
-    ...CTAElementData
-    ...CarouselBlockData
-    ...ContentRecsElementData
-    ...ContinueReadingComponentData
-    ...HeadingElementData
-    ...HeroBlockData
-    ...ImageElementData
-    ...LayoutSettingsBlockData
-    ...MegaMenuGroupBlockData
-    ...MenuNavigationBlockData
-    ...OdpEmbedBlockData
-    ...PageSeoSettingsData
-    ...ParagraphElementData
-    ...QuoteBlockData
-    ...RichTextElementData
-    ...TestimonialElementData
-    ...TextBlockData
-    ...VideoElementData
-    ...BlankSectionData
-  }
-}
-    `;
 export const CarouselBlockDataFragmentDoc = gql`
     fragment CarouselBlockData on CarouselBlock {
   CarouselItemsContentArea {
@@ -385,7 +353,6 @@ export const CarouselBlockDataFragmentDoc = gql`
     ...CTAElementData
     ...CarouselBlockData
     ...ContentRecsElementData
-    ...ContinueReadingComponentData
     ...HeadingElementData
     ...HeroBlockData
     ...ImageElementData
@@ -429,7 +396,6 @@ export const CompositionDataFragmentDoc = gql`
       ...CTAElementData
       ...CarouselBlockData
       ...ContentRecsElementData
-      ...ContinueReadingComponentData
       ...HeadingElementData
       ...HeroBlockData
       ...ImageElementData
@@ -491,7 +457,6 @@ export const BlogPostPageDataFragmentDoc = gql`
     ...CTAElementData
     ...CarouselBlockData
     ...ContentRecsElementData
-    ...ContinueReadingComponentData
     ...HeadingElementData
     ...HeroBlockData
     ...ImageElementData
@@ -535,7 +500,6 @@ export const LandingPageDataFragmentDoc = gql`
     ...CTAElementData
     ...CarouselBlockData
     ...ContentRecsElementData
-    ...ContinueReadingComponentData
     ...HeadingElementData
     ...HeroBlockData
     ...ImageElementData
@@ -559,7 +523,6 @@ export const LandingPageDataFragmentDoc = gql`
     ...CTAElementData
     ...CarouselBlockData
     ...ContentRecsElementData
-    ...ContinueReadingComponentData
     ...HeadingElementData
     ...HeroBlockData
     ...ImageElementData
@@ -637,48 +600,6 @@ export const getDefaultArticleListDocument = gql`
 ${IContentInfoFragmentDoc}
 ${LinkDataFragmentDoc}
 ${ArticleListElementDataFragmentDoc}`;
-export const getSharedContinueReadingDocument = gql`
-    query getSharedContinueReading($locale: [Locales]) {
-  ContinueReadingComponent(where: {shared: {eq: true}}, locale: $locale) {
-    total
-    item {
-      ...IContentData
-      ...ContinueReadingComponentData
-    }
-  }
-}
-    ${IContentDataFragmentDoc}
-${IContentInfoFragmentDoc}
-${LinkDataFragmentDoc}
-${ContinueReadingComponentDataFragmentDoc}
-${BlockDataFragmentDoc}
-${ArticleListElementDataFragmentDoc}
-${ButtonBlockDataFragmentDoc}
-${CTAElementDataFragmentDoc}
-${CarouselBlockDataFragmentDoc}
-${IContentListItemFragmentDoc}
-${ImageMediaComponentDataFragmentDoc}
-${VideoMediaComponentDataFragmentDoc}
-${ContentRecsElementDataFragmentDoc}
-${HeadingElementDataFragmentDoc}
-${HeroBlockDataFragmentDoc}
-${ReferenceDataFragmentDoc}
-${ButtonBlockPropertyDataFragmentDoc}
-${ImageElementDataFragmentDoc}
-${LayoutSettingsBlockDataFragmentDoc}
-${LinkItemDataFragmentDoc}
-${MegaMenuGroupBlockDataFragmentDoc}
-${MenuNavigationBlockDataFragmentDoc}
-${BlogPostPageMenuBlockFragmentDoc}
-${OdpEmbedBlockDataFragmentDoc}
-${PageSeoSettingsDataFragmentDoc}
-${ParagraphElementDataFragmentDoc}
-${QuoteBlockDataFragmentDoc}
-${RichTextElementDataFragmentDoc}
-${TestimonialElementDataFragmentDoc}
-${TextBlockDataFragmentDoc}
-${VideoElementDataFragmentDoc}
-${BlankSectionDataFragmentDoc}`;
 export const getBlankExperienceMetaDataDocument = gql`
     query getBlankExperienceMetaData($key: String!, $locale: [Locales]) {
   page: BlankExperience(where: {_metadata: {key: {eq: $key}}}, locale: $locale) {
@@ -1054,7 +975,7 @@ export const getContentByIdDocument = gql`
     locale: $locale
   ) {
     total
-    items: item {
+    items {
       ...BlockData
       ...PageData
       ...ArticleListElementData
@@ -1062,7 +983,6 @@ export const getContentByIdDocument = gql`
       ...CTAElementData
       ...CarouselBlockData
       ...ContentRecsElementData
-      ...ContinueReadingComponentData
       ...HeadingElementData
       ...HeroBlockData
       ...ImageElementData
@@ -1098,7 +1018,6 @@ ${IContentListItemFragmentDoc}
 ${ImageMediaComponentDataFragmentDoc}
 ${VideoMediaComponentDataFragmentDoc}
 ${ContentRecsElementDataFragmentDoc}
-${ContinueReadingComponentDataFragmentDoc}
 ${HeadingElementDataFragmentDoc}
 ${HeroBlockDataFragmentDoc}
 ${ReferenceDataFragmentDoc}
@@ -1134,7 +1053,7 @@ export const getContentByPathDocument = gql`
     locale: $locale
   ) {
     total
-    items: item {
+    items {
       ...IContentData
       ...PageData
       ...BlankExperienceData
@@ -1164,7 +1083,6 @@ ${IContentListItemFragmentDoc}
 ${ImageMediaComponentDataFragmentDoc}
 ${VideoMediaComponentDataFragmentDoc}
 ${ContentRecsElementDataFragmentDoc}
-${ContinueReadingComponentDataFragmentDoc}
 ${HeadingElementDataFragmentDoc}
 ${HeroBlockDataFragmentDoc}
 ${ButtonBlockPropertyDataFragmentDoc}
@@ -1193,7 +1111,7 @@ export const getContentTypeDocument = gql`
     locale: $locale
   ) {
     total
-    items: item {
+    items {
       _metadata {
         types
       }
@@ -1214,9 +1132,6 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getDefaultArticleList(variables?: Schema.getDefaultArticleListQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getDefaultArticleListQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<Schema.getDefaultArticleListQuery>(getDefaultArticleListDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getDefaultArticleList', 'query', variables);
-    },
-    getSharedContinueReading(variables?: Schema.getSharedContinueReadingQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getSharedContinueReadingQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<Schema.getSharedContinueReadingQuery>(getSharedContinueReadingDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getSharedContinueReading', 'query', variables);
     },
     getBlankExperienceMetaData(variables: Schema.getBlankExperienceMetaDataQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<Schema.getBlankExperienceMetaDataQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<Schema.getBlankExperienceMetaDataQuery>(getBlankExperienceMetaDataDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getBlankExperienceMetaData', 'query', variables);

@@ -6,12 +6,11 @@ export const ArticleTemplate : ContentRecsDeliveryProps['template'] = ({ data })
 {
     let linkUrl = data.link_url
     try {
-        const ld = new URL(linkUrl)
+        const ld = new URL(data.link_url)
         linkUrl = ld.pathname + (ld.search ?? "")
     } catch {
         // Ignore...
     }
-    const mainImageUrl = data.main_image_url && data.main_image_url.startsWith('//') ? 'https:' + data.main_image_url : data.main_image_url
 
     const article : ArticleCardData = {
         key: data.id,
@@ -20,7 +19,7 @@ export const ArticleTemplate : ContentRecsDeliveryProps['template'] = ({ data })
         link: linkUrl,
         published: data.published ?? undefined,
         image: {
-            src: mainImageUrl,
+            src: data.main_image_url,
             width: tryParseInt(data.main_image.width, 640),
             height: tryParseInt(data.main_image.height, 430),
             alt: data.title

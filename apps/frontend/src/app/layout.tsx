@@ -5,12 +5,10 @@ import "./globals.scss";
 import { Body, ThemeProvider } from "@/components/theme"
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
-import { factory } from '@/components/factory';
-import { client } from '@/sdk';
 
 // Server side components
 import { EnvTools, Scripts, OptimizelyOneGadget } from "@remkoj/optimizely-one-nextjs/server";
-import { ServerContext } from "@remkoj/optimizely-cms-react/rsc";
+import { getServerContext } from "@remkoj/optimizely-cms-react/rsc";
 
 // Client side trackers
 import { OptimizelyOneProvider, PageActivator } from "@remkoj/optimizely-one-nextjs/client";
@@ -61,8 +59,9 @@ export type RootLayoutProps = {
 };
 
 export default function RootLayout({ children }: RootLayoutProps) {
-  const locale = "en"
-  const ctx = new ServerContext({ locale, factory, client })
+  // This will obtain the server context from the page, before the first async function
+  // is invoked
+  const { locale } = getServerContext();
 
   // Allow environment control over whether the WX snippet can be changed by the client
   const forceDisableOverride = EnvTools.readValueAsBoolean("DISABLE_WX_SWITCHER", false);
@@ -83,9 +82,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <OptimizelyOneProvider value={{ debug: false }} >
             <PageActivator />
             <div className="flex min-h-screen flex-col justify-between">
-              <Header locale={ locale } ctx={ ctx } />
+              <Header />
               <main className="grow">{ children }</main>
-              <Footer ctx={ ctx } />
+              <Footer />
             </div>
             <OptimizelyOneGadget />
           </OptimizelyOneProvider>

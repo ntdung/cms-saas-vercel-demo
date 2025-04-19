@@ -1,11 +1,6 @@
-// Auto generated route for /.well-known/optimizely/datafile by Optimizely Feature Experimentation.
-import { type NextRequest, NextResponse } from "next/server";
-import { updateDatafile } from "../../../../opti";
+import { type NextRequest, NextResponse } from "next/server"
+import { updateDatafile } from "../../../../opti"
 
-/**
- * This is the default handler for the "datafile changed" webhook that can be sent by 
- * Optimizely.
- */
 async function handler(req: NextRequest)
 {
     const token = req.nextUrl.searchParams.get('token')

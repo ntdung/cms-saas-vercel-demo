@@ -42,7 +42,6 @@ export const ArticleListElementElement: CmsComponent<
 > = async ({
   data: { articleListCount = 3, topics = [], excludeKeys = [], seed = 2 },
   contentLink: { key, locale },
-  ctx
 }) => {
   const sdk = getSdk();
   const articles = (
@@ -83,7 +82,6 @@ export const ArticleListElementElement: CmsComponent<
       as="div"
       cmsId={key}
       className="grid grid-cols-1 lg:grid-cols-3 gap-10 relative pb-12 w-full"
-      ctx={ctx}
     >
       {shownArticles.map((article) => {
         let authors: string | undefined = undefined;

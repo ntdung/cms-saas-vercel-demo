@@ -39,7 +39,6 @@ export const HeroBlockComponent: CmsComponent<HeroBlockDataFragment> = ({
   },
   inEditMode,
   contentLink,
-  ctx
 }) => {
   const heroImage = getFragmentData(ReferenceDataFragmentDoc, image);
   const heroImageLink = getFragmentData(LinkDataFragmentDoc, heroImage?.url);
@@ -58,7 +57,6 @@ export const HeroBlockComponent: CmsComponent<HeroBlockDataFragment> = ({
       as="section"
       className={`py-8 lg:py-16 ${ColorClasses[color || "blue"]}`}
       cmsId={contentLink.key}
-      ctx={ ctx }
     >
       <div className={`w-full @container/card container px-8 mx-auto`}>
         <div
@@ -72,12 +70,12 @@ export const HeroBlockComponent: CmsComponent<HeroBlockDataFragment> = ({
             className={`prose lg:prose-h1:text-7xl lg:prose-h1:my-12 prose-h1:font-bold prose-p:text-2xl prose-p:leading-10 prose-img:my-4 ${hasImage ? "" : "max-w-[900px] mx-auto"}`}
           >
             {(inEditMode || eyebrow) && (
-              <CmsEditable as="p" cmsFieldName="Eyebrow" className="eyebrow" ctx={ ctx }>
+              <CmsEditable as="p" cmsFieldName="Eyebrow" className="eyebrow">
                 {eyebrow || "+ Add Eyebrow"}
               </CmsEditable>
             )}
             {(inEditMode || heading) && (
-              <CmsEditable as="h1" cmsFieldName="Heading" ctx={ ctx }>
+              <CmsEditable as="h1" cmsFieldName="Heading">
                 {heading || "+ Add Heading"}
               </CmsEditable>
             )}
@@ -86,8 +84,6 @@ export const HeroBlockComponent: CmsComponent<HeroBlockDataFragment> = ({
                 as={RichText}
                 text={description.json}
                 cmsFieldName="Description"
-                ctx={ ctx }
-                forwardCtx="ctx"
               />
             ) : (
               inEditMode &&
@@ -104,7 +100,6 @@ export const HeroBlockComponent: CmsComponent<HeroBlockDataFragment> = ({
                 data={button}
                 inEditMode={false}
                 contentLink={{ key: null }}
-                ctx={ ctx }
               />
             ) : (
               inEditMode &&
