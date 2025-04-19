@@ -1,0 +1,26 @@
+{
+  "key": "HeadingElement",
+  "displayName": "Heading",
+  "description": "",
+  "baseType": "component",
+  "sortOrder": 0,
+  "mayContainTypes": [],
+  "mediaFileExtensions": [],
+  "compositionBehaviors": [
+    "sectionEnabled",
+    "elementEnabled"
+  ],
+  "properties": {
+    "headingText": {
+      "type": "string",
+      "displayName": "Heading text",
+      "description": "",
+      "localized": false,
+      "required": true,
+      "group": "Information",
+      "sortOrder": 0,
+      "indexingType": "searchable",
+      "editorSettings": {}
+    }
+  }
+}

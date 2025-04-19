@@ -1,0 +1,86 @@
+{
+  "key": "PageSeoSettings",
+  "displayName": "Page SEO Settings",
+  "description": "",
+  "baseType": "component",
+  "sortOrder": 100,
+  "mayContainTypes": [],
+  "mediaFileExtensions": [],
+  "compositionBehaviors": [],
+  "properties": {
+    "MetaTitle": {
+      "type": "string",
+      "format": "shortString",
+      "displayName": "Meta title",
+      "description": "",
+      "localized": true,
+      "required": false,
+      "group": "Information",
+      "sortOrder": 0,
+      "indexingType": "searchable",
+      "editorSettings": {}
+    },
+    "MetaDescription": {
+      "type": "string",
+      "displayName": "Meta description",
+      "description": "",
+      "localized": false,
+      "required": false,
+      "group": "Information",
+      "sortOrder": 0,
+      "indexingType": "searchable",
+      "editorSettings": {}
+    },
+    "MetaKeywords": {
+      "type": "array",
+      "displayName": "Meta Keywords",
+      "description": "",
+      "localized": true,
+      "required": false,
+      "group": "Information",
+      "sortOrder": 25,
+      "indexingType": "searchable",
+      "editorSettings": {},
+      "items": {
+        "type": "string",
+        "format": "shortString"
+      }
+    },
+    "SharingImage": {
+      "type": "contentReference",
+      "displayName": "Sharing image",
+      "description": "",
+      "localized": false,
+      "required": false,
+      "group": "Information",
+      "sortOrder": 100,
+      "editorSettings": {},
+      "allowedTypes": [],
+      "restrictedTypes": []
+    },
+    "GraphType": {
+      "type": "string",
+      "format": "selectOne",
+      "displayName": "OpenGraph Type",
+      "description": "",
+      "localized": false,
+      "required": true,
+      "group": "Information",
+      "sortOrder": 200,
+      "indexingType": "searchable",
+      "editorSettings": {},
+      "enum": {
+        "values": [
+          {
+            "displayName": "Undefined",
+            "value": "-"
+          },
+          {
+            "displayName": "Article",
+            "value": "article"
+          }
+        ]
+      }
+    }
+  }
+}
