@@ -2,7 +2,6 @@
 import { useMemo, useEffect, useState } from "react";
 import { DropDown, type DropDownOption } from "@/components/shared/drop_down";
 import BlogPostCard from "@/components/shared/blog_post_card";
-import { useIntUrlState, useStringUrlState } from "@/lib/use-url-state";
 import { Utils } from "@remkoj/optimizely-cms-react";
 import {
   getBlogPosts,
@@ -33,10 +32,12 @@ export default function BlogPostsSection({
   }
 }: BlogPostsSectionProps) {
   // Build the context
-  const [pageSize, setPageSize] = useStringUrlState("pageSize", itemsPerPageOptions[1].value);
-  const [skip, setSkip] = useIntUrlState("skip", 0);
-  const [topic, setTopic] = useStringUrlState("topic", "");
-  const [author, setAuthor] = useStringUrlState("author", "");
+  const [pageSize, setPageSize] = useState<string>(
+    itemsPerPageOptions[1].value,
+  );
+  const [skip, setSkip] = useState<number>(0);
+  const [topic, setTopic] = useState<string>("");
+  const [author, setAuthor] = useState<string>("");
   const [pageData, setPageData] = useState<GetBlogPostsResult>(initialdata);
   const [isLoading, setLoading] = useState<boolean>((initialdata?.total ?? 0) == 0);
   const limit = useMemo(() => tryParseNumber(pageSize, 10) ?? 9, [pageSize]);
@@ -79,6 +80,7 @@ export default function BlogPostsSection({
       topic,
       author,
     };
+    console.log("Blog post fetching params", params)
     const updateData = async () => {
       const newPageData = await getBlogPosts(params);
       if (cancelled) return;

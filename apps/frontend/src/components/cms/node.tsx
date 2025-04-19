@@ -12,6 +12,4 @@ export const VisualBuilderNode : CmsLayoutComponent = ({ contentLink, layoutProp
     return <div className={ className }>{ children }</div>
 }
 
-VisualBuilderNode.displayName = "[VisualBuilder] Default node"
-
 export default VisualBuilderNode

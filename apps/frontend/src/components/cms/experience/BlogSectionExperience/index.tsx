@@ -1,10 +1,10 @@
 import { type OptimizelyNextPage as CmsComponent } from "@remkoj/optimizely-cms-nextjs";
 import { getFragmentData } from "@/gql/fragment-masking";
-import { ExperienceDataFragmentDoc, BlogSectionExperienceDataFragmentDoc, type BlogSectionExperienceDataFragment, PageSeoSettingsPropertyDataFragmentDoc, type Locales, ReferenceDataFragmentDoc, LinkDataFragmentDoc } from "@/gql/graphql";
+import { ExperienceDataFragmentDoc, CompositionDataFragmentDoc, BlogSectionExperienceDataFragmentDoc, type BlogSectionExperienceDataFragment, PageSeoSettingsPropertyDataFragmentDoc, type Locales, ReferenceDataFragmentDoc, LinkDataFragmentDoc } from "@/gql/graphql";
 import { OptimizelyComposition, isNode, CmsEditable, Utils } from "@remkoj/optimizely-cms-react/rsc";
 import { getSdk } from "@/gql"
 import BlogPostsSection from "./partials/blogposts";
-import { getBlogPosts, type GetBlogPostsParams } from "./actions/getBlogPosts"
+import { getBlogPosts } from "./actions/getBlogPosts"
 import { Suspense } from "react";
 
 /**
@@ -12,16 +12,15 @@ import { Suspense } from "react";
  * Add a blog/news section to your site
  */
 export const BlogSectionExperienceExperience : CmsComponent<BlogSectionExperienceDataFragment> = async ({ data, contentLink, ctx }) => {
-    const composition = getFragmentData(ExperienceDataFragmentDoc, data).composition
-    const initialDataParams : GetBlogPostsParams = { locale: contentLink.locale ?? 'en', parentKey: contentLink.key ?? 'n/a' }
-    const initialData = await getBlogPosts(initialDataParams)
+    const composition = getFragmentData(CompositionDataFragmentDoc, getFragmentData(ExperienceDataFragmentDoc, data)?.composition)
+    const initialData = await getBlogPosts({ locale: contentLink.locale ?? 'en', parentKey: contentLink.key ?? 'n/a' })
     return <div className="" data-component="BlogSectionExperience">
         <CmsEditable as="div" className="py-8" cmsFieldName="unstructuredData" ctx={ctx}>
             { composition && isNode(composition) && <OptimizelyComposition node={composition} ctx={ctx} /> }
         </CmsEditable>
         { contentLink.key && contentLink.locale &&
         <div className="mx-auto px-4 lg:px-6 container">
-            <Suspense fallback={<></>}>
+            <Suspense>
                 <BlogPostsSection parentKey={ contentLink.key } locale={ contentLink.locale } initialdata={initialData} />
             </Suspense>
         </div>}

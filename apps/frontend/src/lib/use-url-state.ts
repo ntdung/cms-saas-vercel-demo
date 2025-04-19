@@ -60,14 +60,13 @@ export function useUrlState<T = any>(parameter: string, initialValue: T, validat
 }
 export function useStringUrlState(parameter: string, initialValue: string, validate?: (toValidate: string) => boolean)
 {
-    return useUrlState<string>(parameter, initialValue, validate, x=>x || initialValue,x=>x)
+    return useUrlState<string>(parameter, initialValue, validate, x=>x,x=>x)
 }
 export function useIntUrlState(parameter: string, initialValue: number, validate?: (toValidate: number) => boolean)
 {
     return useUrlState<number>(parameter, initialValue, validate, x=>{
         try {
-            const val = Number.parseInt(x)
-            return isNaN(val) ? initialValue : val
+            return Number.parseInt(x)
         } catch {
             return initialValue
         }
@@ -77,8 +76,7 @@ export function useFloatUrlState(parameter: string, initialValue: number, valida
 {
     return useUrlState<number>(parameter, initialValue, validate, x=>{
         try {
-            const val = Number.parseFloat(x)
-            return isNaN(val) ? initialValue : val
+            return Number.parseFloat(x)
         } catch {
             return initialValue
         }

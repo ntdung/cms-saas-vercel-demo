@@ -5,6 +5,7 @@ type GraphQLClientRequestHeaders = RequestOptions['requestHeaders'];
 export const LinkDataFragmentDoc = gql`
     fragment LinkData on ContentUrl {
   base
+  hierarchical
   default
 }
     `;
@@ -25,19 +26,6 @@ export const PageSeoSettingsPropertyDataFragmentDoc = gql`
     ...ReferenceData
   }
   GraphType
-}
-    `;
-export const CompositionNodeDataFragmentDoc = gql`
-    fragment CompositionNodeData on ICompositionNode {
-  name: displayName
-  layoutType: nodeType
-  type
-  key
-  template: displayTemplateKey
-  settings: displaySettings {
-    key
-    value
-  }
 }
     `;
 export const IContentInfoFragmentDoc = gql`
@@ -416,59 +404,55 @@ export const CarouselBlockDataFragmentDoc = gql`
   }
 }
     `;
-export const CompositionComponentNodeDataFragmentDoc = gql`
-    fragment CompositionComponentNodeData on ICompositionComponentNode {
-  component {
-    ...BlockData
-    ...ElementData
-    ...ArticleListElementData
-    ...ButtonBlockData
-    ...CTAElementData
-    ...CarouselBlockData
-    ...ContentRecsElementData
-    ...ContinueReadingComponentData
-    ...HeadingElementData
-    ...HeroBlockData
-    ...ImageElementData
-    ...LayoutSettingsBlockData
-    ...MegaMenuGroupBlockData
-    ...MenuNavigationBlockData
-    ...OdpEmbedBlockData
-    ...PageSeoSettingsData
-    ...ParagraphElementData
-    ...QuoteBlockData
-    ...RichTextElementData
-    ...TestimonialElementData
-    ...TextBlockData
-    ...VideoElementData
-    ...BlankSectionData
+export const CompositionDataFragmentDoc = gql`
+    fragment CompositionData on ICompositionNode {
+  name: displayName
+  layoutType: nodeType
+  type
+  key
+  template: displayTemplateKey
+  settings: displaySettings {
+    key
+    value
+  }
+  ... on ICompositionStructureNode {
+    nodes @recursive(depth: 10) {
+      name: displayName
+    }
+  }
+  ... on ICompositionComponentNode {
+    component {
+      ...BlockData
+      ...ElementData
+      ...ArticleListElementData
+      ...ButtonBlockData
+      ...CTAElementData
+      ...CarouselBlockData
+      ...ContentRecsElementData
+      ...ContinueReadingComponentData
+      ...HeadingElementData
+      ...HeroBlockData
+      ...ImageElementData
+      ...LayoutSettingsBlockData
+      ...MegaMenuGroupBlockData
+      ...MenuNavigationBlockData
+      ...OdpEmbedBlockData
+      ...PageSeoSettingsData
+      ...ParagraphElementData
+      ...QuoteBlockData
+      ...RichTextElementData
+      ...TestimonialElementData
+      ...TextBlockData
+      ...VideoElementData
+      ...BlankSectionData
+    }
   }
 }
     `;
 export const ExperienceDataFragmentDoc = gql`
     fragment ExperienceData on _IExperience {
   composition {
-    ...CompositionNodeData
-    nodes {
-      ...CompositionNodeData
-      ... on ICompositionStructureNode {
-        nodes {
-          ...CompositionNodeData
-          ... on ICompositionStructureNode {
-            nodes {
-              ...CompositionNodeData
-              ... on ICompositionStructureNode {
-                nodes {
-                  ...CompositionNodeData
-                  ...CompositionComponentNodeData
-                }
-              }
-            }
-          }
-        }
-      }
-      ...CompositionComponentNodeData
-    }
+    ...CompositionData
   }
 }
     `;
@@ -719,18 +703,15 @@ export const getBlankExperienceMetaDataDocument = gql`
     ${ReferenceDataFragmentDoc}
 ${LinkDataFragmentDoc}`;
 export const getChildBlogPostsDocument = gql`
-    query getChildBlogPosts($parentKey: String!, $locale: [Locales!]! = ALL, $author: [String!], $topic: [String!], $limit: Int! = 9, $skip: Int! = 0) {
-  result: BlogSectionExperience(
-    where: {_metadata: {key: {eq: $parentKey}}}
-    locale: $locale
-  ) {
+    query getChildBlogPosts($parentKey: String!, $locale: [Locales!]! = ALL, $author: String! = "", $topic: String! = "", $limit: Int! = 9, $skip: Int! = 0) {
+  result: _Page(where: {_metadata: {key: {eq: $parentKey}}}, locale: $locale) {
     items {
       container: _metadata {
         key
         displayName
       }
       items: _link(type: ITEMS) {
-        BlogPostPage(skip: $skip, limit: $limit, locale: $locale) {
+        posts: BlogPostPage(skip: $skip, limit: $limit) {
           total
           items {
             ...IContentData
@@ -754,11 +735,11 @@ export const getChildBlogPostsDocument = gql`
             }
           }
           facets {
-            author: ArticleAuthor(filters: $author) {
+            author: ArticleAuthor(filters: [$author]) {
               name
               count
             }
-            topic: Topic(orderBy: ASC, filters: $topic) {
+            topic: Topic(orderBy: ASC, filters: [$topic]) {
               name
               count
             }
@@ -1140,8 +1121,7 @@ ${BlankSectionDataFragmentDoc}
 ${BlankExperienceDataFragmentDoc}
 ${PageSeoSettingsPropertyDataFragmentDoc}
 ${ExperienceDataFragmentDoc}
-${CompositionNodeDataFragmentDoc}
-${CompositionComponentNodeDataFragmentDoc}
+${CompositionDataFragmentDoc}
 ${ElementDataFragmentDoc}
 ${IElementDataFragmentDoc}
 ${BlogSectionExperienceDataFragmentDoc}
@@ -1172,8 +1152,7 @@ ${BlankExperienceDataFragmentDoc}
 ${PageSeoSettingsPropertyDataFragmentDoc}
 ${ReferenceDataFragmentDoc}
 ${ExperienceDataFragmentDoc}
-${CompositionNodeDataFragmentDoc}
-${CompositionComponentNodeDataFragmentDoc}
+${CompositionDataFragmentDoc}
 ${BlockDataFragmentDoc}
 ${ElementDataFragmentDoc}
 ${IElementDataFragmentDoc}
